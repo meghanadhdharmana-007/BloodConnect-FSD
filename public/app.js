@@ -1,7 +1,29 @@
 const $=s=>document.querySelector(s);let token=localStorage.getItem("bc_token")||"",me=null,currentPage="home";
 const titles={home:"BloodConnect",profile:"My Profile",history:"Donation History",create:"Request Blood",requests:"Blood Requests",mine:"My Blood Requests",find:"Find Requests",responses:"Donor Responses",notifications:"Notifications"};
 function toast(t,error=false){let n=$("#toast");n.textContent=t;n.classList.remove("hidden","error");if(error)n.classList.add("error");setTimeout(()=>n.classList.add("hidden"),3500)}
-async function api(url,opt={}){let h={"Content-Type":"application/json",...(opt.headers||{})};if(token)h.Authorization="Bearer "+token;let r=await fetch(url,{...opt,headers:h}),d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||"Something went wrong");return d}
+
+const API_BASE = "https://bloodconnect-fsd-production.up.railway.app";
+
+async function api(url, opt = {}) {
+    let h = {
+        "Content-Type": "application/json",
+        ...(opt.headers || {})
+    };
+
+    if (token) h.Authorization = "Bearer " + token;
+
+    let r = await fetch(API_BASE + url, {
+        ...opt,
+        headers: h
+    });
+
+    let d = await r.json().catch(() => ({}));
+
+    if (!r.ok) throw Error(d.error || "Something went wrong");
+
+    return d;
+}
+
 function screen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.add("hidden"));$("#app").classList.add("hidden");$("#"+id).classList.remove("hidden")}
 document.querySelectorAll("[data-screen]").forEach(b=>b.addEventListener("click",e=>{e.preventDefault();screen(b.dataset.screen)}));
 $("#loginForm").onsubmit=async e=>{e.preventDefault();try{let d=await api("/api/login",{method:"POST",body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});token=d.token;localStorage.setItem("bc_token",token);me=d.user;await loadMe();showApp();toast("Welcome back, "+me.name)}catch(x){toast(x.message,true)}};
