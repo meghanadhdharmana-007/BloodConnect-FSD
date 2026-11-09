@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BloodConnect</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="toast" class="toast hidden"></div>
+<section id="welcome" class="screen welcome">
+ <div class="welcome-logo"><div class="drop-logo">✚<span>━</span></div></div><h1>BloodConnect</h1><p class="subtitle">College Blood Donation &amp; Emergency Network</p>
+ <div class="welcome-message"><span>♥</span> Donate blood. Find help. Save lives.</div>
+ <button class="btn primary wide" data-screen="login">⇥ &nbsp; Login</button><button class="btn outline wide" data-screen="register">♟ &nbsp; Create Account</button>
+ <p class="welcome-foot">A simple way for college students to connect during blood emergencies.</p>
+</section>
+<section id="login" class="screen auth-screen hidden">
+ <header class="topbar"><button class="back" data-screen="welcome">‹</button><b>BloodConnect</b></header>
+ <div class="auth-card"><div class="mini-logo">✚</div><h2>Welcome Back</h2><p>Login to your BloodConnect account</p>
+ <form id="loginForm"><label>Email Address<input name="email" type="email" placeholder="Enter your email" required></label><label>Password<input name="password" type="password" placeholder="Enter your password" required></label><button class="btn primary wide">Login</button></form>
+ <p class="switch">Don't have an account? <a href="#" data-screen="register">Create Account</a></p></div>
+</section>
+<section id="register" class="screen auth-screen hidden">
+ <header class="topbar"><button class="back" data-screen="welcome">‹</button><b>Create Account</b></header>
+ <div class="auth-card"><div class="mini-logo">✚</div><h2>Join BloodConnect</h2><p>Create your student donor account</p>
+ <form id="registerForm" class="form-grid">
+ <label>Full Name<input name="name" placeholder="Enter full name" required></label><label>College ID<input name="college_id" placeholder="Enter college ID"></label>
+ <label>Email Address<input name="email" type="email" placeholder="Enter email" required></label><label>Phone Number<input name="phone" placeholder="Enter phone number"></label>
+ <label>Password<input name="password" type="password" minlength="6" placeholder="At least 6 characters" required></label>
+ <label>Blood Group<select name="blood_group" required><option value="">Select blood group</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></label>
+ <label class="span2">City / Location<input name="city" placeholder="Enter city" required></label>
+ <label class="check span2"><input name="is_donor" type="checkbox" checked> I am available as a blood donor</label>
+ <button class="btn primary wide span2">Create Account</button></form><p class="switch">Already registered? <a href="#" data-screen="login">Login</a></p></div>
+</section>
+<section id="app" class="app-shell hidden">
+ <header class="appbar"><button id="backHome" class="icon-btn">‹</button><div class="brand"><span class="brand-drop">✚</span><b id="pageTitle">BloodConnect</b></div><div class="bar-actions"><button id="profileShortcut" class="icon-btn" title="Profile">♙</button><button id="logout" class="icon-btn" title="Logout">⇥</button></div></header>
+ <main id="content" class="content"></main>
+ <nav class="bottom-nav"><button data-page="home" class="active"><span>⌂</span>Home</button><button data-page="requests"><span>▤</span>Requests</button><button data-page="create"><span>＋</span>Request Blood</button><button data-page="notifications"><span>♧</span>Alerts</button><button data-page="profile"><span>♙</span>Profile</button></nav>
+</section>
+<script src="app.js"></script></body></html>
