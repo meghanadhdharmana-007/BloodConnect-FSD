@@ -39,6 +39,21 @@ app.get("/api/donations",auth,async(req,res)=>{const [r]=await db.execute("SELEC
 app.post("/api/donations",auth,async(req,res)=>{const {hospital,city,donation_date}=req.body;if(!hospital||!city||!donation_date)return res.status(400).json({error:"Hospital, city and donation date are required."});await db.execute("INSERT INTO donation_records(user_id,hospital,city,donation_date) VALUES(?,?,?,?)",[req.user.id,hospital,city,donation_date]);res.json({message:"Donation record saved."});});
 app.get("/api/notifications",auth,async(req,res)=>{const [r]=await db.execute("SELECT id,title,body,created_at,is_read FROM notifications WHERE user_id=? ORDER BY created_at DESC",[req.user.id]);res.json(r);});
 app.patch("/api/notifications/:id/read",auth,async(req,res)=>{await db.execute("UPDATE notifications SET is_read=1 WHERE id=? AND user_id=?",[req.params.id,req.user.id]);res.json({message:"Notification marked as read."});});
-app.get("/api/health",(req,res)=>res.json({status:"ok",app:"BloodConnect"}));
-const port=process.env.PORT||3000;
-(async()=>{try{await db.query("SELECT 1");app.listen(port,()=>console.log(`BloodConnect running at http://localhost:${port}`));}catch(e){console.error("MySQL connection failed:",e.message);process.exit(1);}})();
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", app: "BloodConnect" });
+});
+
+const port = process.env.PORT || 3000;
+
+(async () => {
+  try {
+    await db.query("SELECT 1");
+
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`BloodConnect running on port ${port}`);
+    });
+  } catch (e) {
+    console.error("MySQL connection failed:", e.message);
+    process.exit(1);
+  }
+})();
