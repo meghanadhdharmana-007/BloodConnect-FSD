@@ -1,6 +1,21 @@
 require("dotenv").config();
 const express=require("express"), mysql=require("mysql2/promise"), bcrypt=require("bcryptjs"), jwt=require("jsonwebtoken"), path=require("path");
-const app=express(); app.use(express.json()); app.use(express.static(path.join(__dirname,"public")));
+const app = express();
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(204);
+    }
+
+    next();
+});
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 const db=mysql.createPool({host:process.env.DB_HOST||"localhost",port:Number(process.env.DB_PORT||3306),user:process.env.DB_USER||"root",password:process.env.DB_PASSWORD||"",database:process.env.DB_NAME||"bloodconnect",connectionLimit:10});
 const SECRET=process.env.JWT_SECRET||"change_this_secret";
 function auth(req,res,next){const t=(req.headers.authorization||"").replace(/^Bearer /,"");try{if(!t)throw 0;req.user=jwt.verify(t,SECRET);next();}catch{return res.status(401).json({error:"Please log in first."});}}
